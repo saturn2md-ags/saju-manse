@@ -30,12 +30,17 @@ function ResultContent() {
     const rawGender = searchParams.get('gender');
     const gender: Gender = rawGender === '여' ? '여' : '남';
 
+    const hourParam = searchParams.get('hour');
+    const hasHour = hourParam !== null && hourParam !== '';
+
     return {
       year: clamp(parseInt(searchParams.get('year') || ''), 1900, 2100, 2000),
       month: clamp(parseInt(searchParams.get('month') || ''), 1, 12, 1),
       day: clamp(parseInt(searchParams.get('day') || ''), 1, 31, 1),
-      hour: clamp(parseInt(searchParams.get('hour') || ''), 0, 23, 12),
-      minute: clamp(parseInt(searchParams.get('minute') || ''), 0, 59, 0),
+      ...(hasHour ? {
+        hour: clamp(parseInt(hourParam), 0, 23, 12),
+        minute: clamp(parseInt(searchParams.get('minute') || '0'), 0, 59, 0),
+      } : {}),
       gender,
       isLunar: searchParams.get('lunar') === '1',
       isLeapMonth: searchParams.get('leapMonth') === '1',
@@ -65,14 +70,17 @@ function ResultContent() {
       <div className="max-w-lg mx-auto px-4 pt-6">
         <div className="text-center mb-6">
           <p className="text-gray-400 text-sm">
-            {input.isLunar ? (input.isLeapMonth ? '음력(윤달)' : '음력') : '양력'} {input.year}년 {input.month}월 {input.day}일 {input.hour}시 {input.minute}분
+            {input.isLunar ? (input.isLeapMonth ? '음력(윤달)' : '음력') : '양력'} {input.year}년 {input.month}월 {input.day}일
+            {input.hour !== undefined ? ` ${input.hour}시 ${input.minute ?? 0}분` : ' (시간 미상)'}
           </p>
           <p className="text-gray-500 text-xs mt-1">
             {input.gender === '남' ? '남성' : '여성'} · {yearAnimal}띠 ·
             {' '}{STEMS_HANJA[result.fourPillars.year.stem]}{BRANCHES_HANJA[result.fourPillars.year.branch]}년
             {' '}{STEMS_HANJA[result.fourPillars.month.stem]}{BRANCHES_HANJA[result.fourPillars.month.branch]}월
             {' '}{STEMS_HANJA[result.fourPillars.day.stem]}{BRANCHES_HANJA[result.fourPillars.day.branch]}일
-            {' '}{STEMS_HANJA[result.fourPillars.hour.stem]}{BRANCHES_HANJA[result.fourPillars.hour.branch]}시
+            {result.fourPillars.hour
+              ? ` ${STEMS_HANJA[result.fourPillars.hour.stem]}${BRANCHES_HANJA[result.fourPillars.hour.branch]}시`
+              : ''}
           </p>
         </div>
 

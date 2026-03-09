@@ -9,14 +9,16 @@ import { BRANCH_ELEMENTS, BRANCH_HIDDEN_STEMS } from '@/lib/constants/branches';
 export function calculateElementBalance(pillars: FourPillars): ElementBalance {
   const balance: ElementBalance = { 목: 0, 화: 0, 토: 0, 금: 0, 수: 0 };
 
-  // 천간 4개 (각 1점)
-  const stems = [pillars.year.stem, pillars.month.stem, pillars.day.stem, pillars.hour.stem];
+  // 천간 (각 1점)
+  const stems = [pillars.year.stem, pillars.month.stem, pillars.day.stem];
+  if (pillars.hour) stems.push(pillars.hour.stem);
   for (const stem of stems) {
     balance[STEM_ELEMENTS[stem]] += 1;
   }
 
-  // 지지 4개 (본기 1점, 중기 0.5점, 여기 0.3점)
-  const branches = [pillars.year.branch, pillars.month.branch, pillars.day.branch, pillars.hour.branch];
+  // 지지 (본기 1점, 중기 0.5점, 여기 0.3점)
+  const branches = [pillars.year.branch, pillars.month.branch, pillars.day.branch];
+  if (pillars.hour) branches.push(pillars.hour.branch);
   for (const branch of branches) {
     const hidden = BRANCH_HIDDEN_STEMS[branch];
     balance[STEM_ELEMENTS[hidden.main]] += 1;

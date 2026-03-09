@@ -22,8 +22,8 @@ export interface TenGodAnalysis {
   monthBranch: TenGod;
   dayStem: string;      // '일간(나)' - 본인
   dayBranch: TenGod;
-  hourStem: TenGod;
-  hourBranch: TenGod;
+  hourStem?: TenGod;
+  hourBranch?: TenGod;
 
   // 십성 개수 통계
   counts: Record<TenGod, number>;
@@ -41,11 +41,13 @@ export function analyzeTenGods(pillars: FourPillars): TenGodAnalysis {
   const monthStem = getStemTenGod(dayMaster, pillars.month.stem);
   const monthBranch = getBranchMainTenGod(dayMaster, pillars.month.branch);
   const dayBranch = getBranchMainTenGod(dayMaster, pillars.day.branch);
-  const hourStem = getStemTenGod(dayMaster, pillars.hour.stem);
-  const hourBranch = getBranchMainTenGod(dayMaster, pillars.hour.branch);
+  const hourStem = pillars.hour ? getStemTenGod(dayMaster, pillars.hour.stem) : undefined;
+  const hourBranch = pillars.hour ? getBranchMainTenGod(dayMaster, pillars.hour.branch) : undefined;
 
   // 통계
-  const allGods = [yearStem, yearBranch, monthStem, monthBranch, dayBranch, hourStem, hourBranch];
+  const allGods: TenGod[] = [yearStem, yearBranch, monthStem, monthBranch, dayBranch];
+  if (hourStem) allGods.push(hourStem);
+  if (hourBranch) allGods.push(hourBranch);
   const counts: Record<TenGod, number> = {
     '비견': 0, '겁재': 0, '식신': 0, '상관': 0, '편재': 0,
     '정재': 0, '편관': 0, '정관': 0, '편인': 0, '정인': 0,

@@ -117,14 +117,16 @@ export function analyzeTenGodSummary(pillars: FourPillars): TenGodSummary {
     '정재': 0, '편관': 0, '정관': 0, '편인': 0, '정인': 0,
   };
 
-  // 천간 3개 (년/월/시, 일간 제외)
-  const otherStems = [pillars.year.stem, pillars.month.stem, pillars.hour.stem];
+  // 천간 (년/월/시 - 일간 제외)
+  const otherStems = [pillars.year.stem, pillars.month.stem];
+  if (pillars.hour) otherStems.push(pillars.hour.stem);
   for (const stem of otherStems) {
     distribution[TEN_GOD_TABLE[dayMaster][stem]]++;
   }
 
-  // 지지 4개 (본기)
-  const branches = [pillars.year.branch, pillars.month.branch, pillars.day.branch, pillars.hour.branch];
+  // 지지 (본기)
+  const branches = [pillars.year.branch, pillars.month.branch, pillars.day.branch];
+  if (pillars.hour) branches.push(pillars.hour.branch);
   for (const branch of branches) {
     const mainStem = BRANCH_HIDDEN_STEMS[branch].main;
     distribution[TEN_GOD_TABLE[dayMaster][mainStem]]++;

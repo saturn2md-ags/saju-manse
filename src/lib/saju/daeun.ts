@@ -24,7 +24,7 @@ export function getDaeunDirection(yearStemIdx: number, gender: '남' | '여'): '
 // 대운수 계산 (대운 시작 나이)
 // ==========================================
 export function calculateDaeunStartAge(input: BirthInput, direction: '순행' | '역행'): number {
-  const { year, month, day, hour, minute } = input;
+  const { year, month, day, hour = 0, minute = 0 } = input;
   const terms = getSolarTermDates(year);
 
   // 생일의 분 환산

@@ -41,16 +41,16 @@ function createPillar(stem: number, branch: number, dayMasterStem?: number): Pil
 // ==========================================
 export function calculateFourPillars(input: BirthInput): FourPillars {
   const { year, month, day, hour, minute = 0 } = input;
+  const hasHour = hour !== undefined;
 
-  // manseryeok 라이브러리로 사주 계산
-  const result = manseryeokSaju(year, month, day, hour, minute);
+  // manseryeok 라이브러리로 사주 계산 (시간 없으면 0시로 계산하되 시주는 사용 안 함)
+  const result = manseryeokSaju(year, month, day, hasHour ? hour : 0, hasHour ? minute : 0);
 
   // 야자시(23:00~23:59) 처리: 다음날 일주 사용
-  // manseryeok은 전통 방식(당일 일주)이므로, 다음날로 재계산
   let dayPillarStr = result.dayPillar;
   let hourPillarStr = result.hourPillar;
 
-  if (hour >= 23) {
+  if (hasHour && hour >= 23) {
     const nextDay = new Date(year, month - 1, day + 1);
     const nextResult = manseryeokSaju(
       nextDay.getFullYear(),
@@ -59,21 +59,26 @@ export function calculateFourPillars(input: BirthInput): FourPillars {
       0, 0
     );
     dayPillarStr = nextResult.dayPillar;
-    hourPillarStr = nextResult.hourPillar; // 다음날 자시 = 임자/갑자 등
+    hourPillarStr = nextResult.hourPillar;
   }
 
   // 한글 주(柱) → 숫자 인덱스 변환
   const [yearStem, yearBranch] = parsePillar(result.yearPillar);
   const [monthStem, monthBranch] = parsePillar(result.monthPillar);
   const [dayStem, dayBranch] = parsePillar(dayPillarStr);
-  const [hourStem, hourBranch] = parsePillar(hourPillarStr);
 
   const dayMaster = dayStem;
 
-  return {
+  const pillars: FourPillars = {
     year: createPillar(yearStem, yearBranch, dayMaster),
     month: createPillar(monthStem, monthBranch, dayMaster),
     day: createPillar(dayStem, dayBranch, dayMaster),
-    hour: createPillar(hourStem, hourBranch, dayMaster),
   };
+
+  if (hasHour) {
+    const [hourStem, hourBranch] = parsePillar(hourPillarStr);
+    pillars.hour = createPillar(hourStem, hourBranch, dayMaster);
+  }
+
+  return pillars;
 }

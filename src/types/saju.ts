@@ -28,7 +28,7 @@ export interface FourPillars {
   year: Pillar;    // 년주
   month: Pillar;   // 월주
   day: Pillar;     // 일주 (일간 = day master)
-  hour: Pillar;    // 시주
+  hour?: Pillar;   // 시주 (시간 미입력 시 없음)
 }
 
 // 대운 (Major Luck Cycle)
@@ -108,8 +108,8 @@ export interface BirthInput {
   year: number;
   month: number;
   day: number;
-  hour: number;
-  minute: number;
+  hour?: number;
+  minute?: number;
   gender: Gender;
   isLunar?: boolean;
   isLeapMonth?: boolean; // 음력 윤달 여부

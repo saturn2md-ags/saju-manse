@@ -15,11 +15,15 @@ import { BRANCHES, BRANCHES_HANJA } from '@/lib/constants/branches';
 const PILLAR_NAMES = ['년', '월', '일', '시'] as const;
 
 function getPillarStems(pillars: FourPillars): number[] {
-  return [pillars.year.stem, pillars.month.stem, pillars.day.stem, pillars.hour.stem];
+  const stems = [pillars.year.stem, pillars.month.stem, pillars.day.stem];
+  if (pillars.hour) stems.push(pillars.hour.stem);
+  return stems;
 }
 
 function getPillarBranches(pillars: FourPillars): number[] {
-  return [pillars.year.branch, pillars.month.branch, pillars.day.branch, pillars.hour.branch];
+  const branches = [pillars.year.branch, pillars.month.branch, pillars.day.branch];
+  if (pillars.hour) branches.push(pillars.hour.branch);
+  return branches;
 }
 
 // ==========================================

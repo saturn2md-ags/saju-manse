@@ -23,7 +23,7 @@ export default function Home() {
     if (!year || !month || !day || parseInt(month) < 1 || parseInt(month) > 12 || parseInt(day) < 1 || parseInt(day) > 31) return;
 
     // 시간 파싱: 숫자만 (HHMM 또는 HMM 또는 HH) 또는 빈값
-    let hour = '12';
+    let hour: string | null = null;
     let minute = '0';
     const timeStr = birthTime.trim();
     if (timeStr) {
@@ -40,10 +40,14 @@ export default function Home() {
     }
 
     const params = new URLSearchParams({
-      year, month, day, hour, minute, gender,
+      year, month, day, gender,
       lunar: isLunar ? '1' : '0',
       leapMonth: isLunar && isLeapMonth ? '1' : '0',
     });
+    if (hour !== null) {
+      params.set('hour', hour);
+      params.set('minute', minute);
+    }
 
     router.push(`/result?${params.toString()}`);
   };

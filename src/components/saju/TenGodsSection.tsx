@@ -30,7 +30,7 @@ export default function TenGodsSection({ pillars }: TenGodsSectionProps) {
       <div className="grid grid-cols-4 gap-2 mb-4 bg-black/30 rounded-xl p-3">
         <div className="text-center">
           <div className="text-xs text-gray-500">시간</div>
-          <div className="text-sm text-white font-bold">{analysis.hourStem}</div>
+          <div className="text-sm text-gray-300 font-bold">{analysis.hourStem ?? '-'}</div>
         </div>
         <div className="text-center">
           <div className="text-xs text-blue-400">일간</div>
@@ -46,7 +46,7 @@ export default function TenGodsSection({ pillars }: TenGodsSectionProps) {
         </div>
         <div className="text-center">
           <div className="text-xs text-gray-500">시지</div>
-          <div className="text-sm text-gray-300">{analysis.hourBranch}</div>
+          <div className="text-sm text-gray-300">{analysis.hourBranch ?? '-'}</div>
         </div>
         <div className="text-center">
           <div className="text-xs text-gray-500">일지</div>

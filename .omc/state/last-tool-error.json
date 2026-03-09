@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"which vercel 2>&1 && npx vercel --version 2>&1 | head -3\",\"description\":\"Check Vercel CLI\"}",
+  "error": "Exit code 1",
+  "timestamp": "2026-03-09T15:56:48.696Z",
+  "retry_count": 2
+}

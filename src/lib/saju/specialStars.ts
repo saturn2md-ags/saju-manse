@@ -82,12 +82,13 @@ export function analyzeSpecialStars(pillars: FourPillars): SpecialStar[] {
   const dayMaster = pillars.day.stem;
   const yearBranch = pillars.year.branch;
   const dayBranch = pillars.day.branch;
-  const branches = [pillars.year.branch, pillars.month.branch, pillars.day.branch, pillars.hour.branch];
+  const branches: (number | undefined)[] = [pillars.year.branch, pillars.month.branch, pillars.day.branch, pillars.hour?.branch];
+  const pillarCount = pillars.hour ? 4 : 3;
 
   // 헬퍼: 일간 기준 단일 지지 체크
   function checkStemTarget(name: string, table: Record<number, number>, isPositive: boolean) {
     const target = table[dayMaster];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < pillarCount; i++) {
       if (branches[i] === target) {
         stars.push({ name, position: `${PILLAR_NAMES[i]}지`, isPositive });
       }
@@ -102,7 +103,7 @@ export function analyzeSpecialStars(pillars: FourPillars): SpecialStar[] {
     isPositive: boolean,
   ) {
     const target = table[baseBranch];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < pillarCount; i++) {
       if (branches[i] === target) {
         stars.push({ name, position: `${PILLAR_NAMES[i]}지`, isPositive });
       }
@@ -111,8 +112,8 @@ export function analyzeSpecialStars(pillars: FourPillars): SpecialStar[] {
 
   // 1. 천을귀인 (일간 기준, 복수 지지)
   const guiinBranches = CHEONUL_GUIIN[dayMaster];
-  for (let i = 0; i < 4; i++) {
-    if (guiinBranches.includes(branches[i])) {
+  for (let i = 0; i < pillarCount; i++) {
+    if (branches[i] !== undefined && guiinBranches.includes(branches[i] as number)) {
       stars.push({ name: '천을귀인', position: `${PILLAR_NAMES[i]}지`, isPositive: true });
     }
   }
@@ -155,8 +156,10 @@ export function analyzeSpecialStars(pillars: FourPillars): SpecialStar[] {
 
   // 12. 괴강살 (특정 간지 조합)
   {
-    const pillarsArr = [pillars.year, pillars.month, pillars.day, pillars.hour];
-    for (let i = 0; i < 4; i++) {
+    const pillarsArr = pillars.hour
+      ? [pillars.year, pillars.month, pillars.day, pillars.hour]
+      : [pillars.year, pillars.month, pillars.day];
+    for (let i = 0; i < pillarsArr.length; i++) {
       const s = pillarsArr[i].stem;
       const b = pillarsArr[i].branch;
       for (const [ps, pb] of GOEGANG_PAIRS) {
