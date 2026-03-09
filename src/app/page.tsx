@@ -203,7 +203,7 @@ export default function Home() {
               <span className="text-purple-400">●</span> 사주팔자 - 타고난 성격과 운명의 설계도
             </li>
             <li className="flex items-center gap-2">
-              <span className="text-purple-400">●</span> 일간 분석 - 나는 어떤 사람인가?
+              <span className="text-purple-400">●</span> 격국/일간 분석 - 나는 어떤 사람인가?
             </li>
             <li className="flex items-center gap-2">
               <span className="text-purple-400">●</span> 십성 분석 - 나를 둘러싼 에너지들
@@ -212,10 +212,13 @@ export default function Home() {
               <span className="text-purple-400">●</span> 오행 밸런스 - 에너지의 균형 상태
             </li>
             <li className="flex items-center gap-2">
-              <span className="text-purple-400">●</span> 대운/세운/월운 - 10년, 1년, 1달의 운세
+              <span className="text-purple-400">●</span> 합충형파해 - 기운들의 상호작용
             </li>
             <li className="flex items-center gap-2">
-              <span className="text-purple-400">●</span> 신살 - 특별한 별들의 영향
+              <span className="text-purple-400">●</span> 신살/공망 - 특별한 별들과 빈 에너지
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-purple-400">●</span> 대운/세운/월운 - 10년, 1년, 1달의 운세
             </li>
           </ul>
         </div>
