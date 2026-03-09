@@ -19,6 +19,15 @@ function getColumnKey(position: string): string {
   return '기타';
 }
 
+// S급: 0~5, A급: 10~19, B급: 20+
+function getGradeOpacity(name: string): string {
+  const S = ['천을귀인', '태극귀인', '양인살', '괴강살', '역마살', '도화살'];
+  const B = ['학당귀인', '문곡귀인', '금여록', '장성살', '반안살', '망신살'];
+  if (S.includes(name)) return '';           // 100%
+  if (B.includes(name)) return 'opacity-50'; // 50%
+  return 'opacity-75';                       // A급 75%
+}
+
 export default function SpecialStarsSection({ stars }: SpecialStarsSectionProps) {
   const [modalStar, setModalStar] = useState<string | null>(null);
 
@@ -66,7 +75,7 @@ export default function SpecialStarsSection({ stars }: SpecialStarsSectionProps)
                 <button
                   key={col}
                   onClick={() => setModalStar(starName)}
-                  className={`py-2 px-1 text-center text-xs font-medium transition-colors hover:bg-gray-700/50 ${
+                  className={`py-2 px-1 text-center text-xs font-medium transition-colors hover:bg-gray-700/50 ${getGradeOpacity(starName)} ${
                     isPositive === true ? 'text-emerald-400' :
                     isPositive === false ? 'text-orange-400' :
                     'text-gray-400'

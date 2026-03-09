@@ -8,6 +8,27 @@ interface InteractionsSectionProps {
   interactions: Interaction[];
 }
 
+// 기둥 조합별 쉬운 설명 (년=사회/윗사람, 월=직장/부모, 일=나, 시=자녀/미래)
+function getPositionLabel(positions: string[]): string {
+  const pillars = [...new Set(positions.map(p => p.replace(/[간지]$/, '')))].sort();
+  const key = pillars.join('-');
+
+  const labels: Record<string, string> = {
+    '년-월': '사회·직장 사이',
+    '년-일': '윗사람과 나 사이',
+    '년-시': '과거와 미래 사이',
+    '월-일': '직장·부모와 나 사이',
+    '월-시': '직장과 자녀·미래 사이',
+    '일-시': '나와 자녀 사이',
+    '년-월-일': '사회·직장·나를 잇는 큰 흐름',
+    '년-월-시': '사회·직장·미래를 잇는 큰 흐름',
+    '년-일-시': '윗사람·나·자녀를 잇는 큰 흐름',
+    '월-일-시': '직장·나·자녀를 잇는 큰 흐름',
+    '년-월-일-시': '사주 전체를 관통하는 흐름',
+  };
+  return labels[key] || positions.join(' ↔ ');
+}
+
 export default function InteractionsSection({ interactions }: InteractionsSectionProps) {
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
 
@@ -44,11 +65,12 @@ export default function InteractionsSection({ interactions }: InteractionsSectio
                     }`}>
                       {inter.type}
                     </span>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-gray-500">
                       {inter.positions.join(' ↔ ')}
                     </span>
                   </div>
                   <p className="text-sm text-gray-300 mt-0.5">{inter.description}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{getPositionLabel(inter.positions)}</p>
                 </div>
                 <span className={`text-gray-500 text-xs transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
                   ▼

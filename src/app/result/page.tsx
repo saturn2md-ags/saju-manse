@@ -105,7 +105,7 @@ function ResultContent() {
           <SpecialStarsSection stars={result.specialStars} />
 
           {/* 7. 공망 */}
-          <GongMangSection gongMang={result.gongMang} />
+          <GongMangSection gongMang={result.gongMang} fourPillars={result.fourPillars} />
 
           {/* 8. 대운 */}
           <DaeunTimeline
