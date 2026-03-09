@@ -23,7 +23,7 @@ export default function AnnualLuckList({ annualLuck }: AnnualLuckListProps) {
       <p className="text-sm text-gray-400 mb-4">매년 바뀌는 운의 흐름이에요</p>
 
       <div className="overflow-x-auto -mx-2 px-2">
-        <div className="flex gap-2 min-w-max pb-2">
+        <div className="flex gap-2 min-w-max pt-1 pb-2">
           {annualLuck.map((luck, idx) => {
             const isCurrent = luck.year === currentYear;
             const isSelected = selectedIdx === idx;

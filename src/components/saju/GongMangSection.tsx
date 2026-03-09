@@ -15,7 +15,7 @@ export default function GongMangSection({ gongMang }: GongMangSectionProps) {
         비어있는 에너지. 해당 지지의 힘이 약해지지만, 영적인 직감이 발달할 수 있어요.
       </p>
 
-      <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-2">
         <div className="bg-black/30 rounded-xl p-3">
           <h3 className="text-xs text-gray-400 mb-2">년주 공망</h3>
           <div className="flex gap-2">
