@@ -22,7 +22,7 @@ function getColumnKey(position: string): string {
 // S급: 0~5, A급: 10~19, B급: 20+
 function getGradeOpacity(name: string): string {
   const S = ['천을귀인', '태극귀인', '양인살', '괴강살', '역마살', '도화살'];
-  const B = ['학당귀인', '문곡귀인', '금여록', '장성살', '반안살', '망신살'];
+  const B = ['학당귀인', '문곡귀인', '금여록', '장성살', '반안살', '망신살', '현침살', '천의성'];
   if (S.includes(name)) return '';           // 100%
   if (B.includes(name)) return 'opacity-50'; // 50%
   return 'opacity-75';                       // A급 75%

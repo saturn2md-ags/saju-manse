@@ -3,7 +3,7 @@
 import { DaeunCycle } from '@/types/saju';
 import { STEMS_HANJA, STEM_ELEMENTS } from '@/lib/constants/stems';
 import { BRANCHES_HANJA, BRANCH_ELEMENTS } from '@/lib/constants/branches';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { ELEMENT_BG, TEN_GOD_DESC, GROWTH_DESC, getStarDescription, getStarEmoji } from './luckInterpretations';
 
 interface DaeunTimelineProps {
@@ -22,6 +22,12 @@ export default function DaeunTimeline({ cycles, startAge, direction, birthYear }
   }, [cycles, currentAge]);
 
   const [selectedIdx, setSelectedIdx] = useState<number>(currentIdx);
+  const [detailOpen, setDetailOpen] = useState(false);
+
+  const handleSelect = useCallback((idx: number) => {
+    setSelectedIdx(idx);
+    setDetailOpen(false);
+  }, []);
 
   const selected = cycles[selectedIdx];
 
@@ -46,7 +52,7 @@ export default function DaeunTimeline({ cycles, startAge, direction, birthYear }
             return (
               <button
                 key={idx}
-                onClick={() => setSelectedIdx(idx)}
+                onClick={() => handleSelect(idx)}
                 className={`flex flex-col items-center gap-0.5 p-1.5 rounded-xl min-w-[68px] transition-all ${
                   isSelected ? 'bg-purple-900/50 ring-2 ring-purple-500' : 'hover:bg-gray-800/50'
                 }`}
@@ -123,22 +129,34 @@ export default function DaeunTimeline({ cycles, startAge, direction, birthYear }
             )}
           </div>
 
-          <p className="text-sm text-gray-300 leading-relaxed">
-            {TEN_GOD_DESC[selected.tenGod]} {GROWTH_DESC[selected.growthStage]}
-          </p>
+          <button
+            onClick={() => setDetailOpen(!detailOpen)}
+            className="w-full flex items-center justify-between pt-1 text-left"
+          >
+            <span className="text-xs text-gray-500 font-bold">상세 해석 보기</span>
+            <span className={`text-gray-500 text-xs transition-transform ${detailOpen ? 'rotate-180' : ''}`}>▼</span>
+          </button>
 
-          {selected.specialStars.length > 0 && (
-            <div className="space-y-1.5 pt-2 border-t border-gray-800">
-              <div className="text-xs text-gray-500 font-bold">신살 해석</div>
-              {selected.specialStars.map((star) => (
-                <div key={star} className="flex items-start gap-1.5 text-sm">
-                  <span>{getStarEmoji(star)}</span>
-                  <div>
-                    <span className="text-yellow-400 font-bold">{star}</span>
-                    <span className="text-gray-400 ml-1">- {getStarDescription(star)}</span>
-                  </div>
+          {detailOpen && (
+            <div className="space-y-2.5">
+              <p className="text-sm text-gray-300 leading-relaxed">
+                {TEN_GOD_DESC[selected.tenGod]} {GROWTH_DESC[selected.growthStage]}
+              </p>
+
+              {selected.specialStars.length > 0 && (
+                <div className="space-y-1.5 pt-2 border-t border-gray-800">
+                  <div className="text-xs text-gray-500 font-bold">신살 해석</div>
+                  {selected.specialStars.map((star) => (
+                    <div key={star} className="flex items-start gap-1.5 text-sm">
+                      <span>{getStarEmoji(star)}</span>
+                      <div>
+                        <span className="text-yellow-400 font-bold">{star}</span>
+                        <span className="text-gray-400 ml-1">- {getStarDescription(star)}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
           )}
         </div>

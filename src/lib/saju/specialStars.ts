@@ -1,7 +1,7 @@
 import { SpecialStar, FourPillars } from '@/types/saju';
 
 // ==========================================
-// 신살 (Special Stars) 계산 - 22개
+// 신살 (Special Stars) 계산 - 26개
 // ==========================================
 
 const PILLAR_NAMES = ['년', '월', '일', '시'] as const;
@@ -13,8 +13,10 @@ const STAR_PRIORITY: Record<string, number> = {
   // A급
   '천덕귀인': 10, '월덕귀인': 11, '문창귀인': 12, '화개살': 13,
   '겁살': 14, '백호살': 15, '귀문관살': 16, '원진살': 17, '홍염살': 18, '건록': 19,
+  '암록': 26, '지살': 27,
   // B급
   '학당귀인': 20, '문곡귀인': 21, '금여록': 22, '장성살': 23, '반안살': 24, '망신살': 25,
+  '현침살': 28, '천의성': 29,
 };
 
 // ==========================================
@@ -143,6 +145,28 @@ const WOLDUK: Record<number, number> = {
   0: 8, 1: 6, 2: 2, 3: 0, 4: 8, 5: 6, 6: 2, 7: 0, 8: 8, 9: 6, 10: 2, 11: 0,
 };
 
+// 암록 (暗祿) - 일간의 건록지와 육합하는 지지
+// 육합: 자축, 인해, 묘술, 진유, 사신, 오미
+const AMROK: Record<number, number> = {
+  0: 11, 1: 10, 2: 8, 3: 7, 4: 8, 5: 7, 6: 5, 7: 4, 8: 2, 9: 1,
+};
+
+// 지살 (地殺) - 년지/일지 삼합 기준
+const JISAL: Record<number, number> = {
+  2: 9, 6: 9, 10: 9, 8: 3, 0: 3, 4: 3,
+  5: 0, 9: 0, 1: 0, 11: 6, 3: 6, 7: 6,
+};
+
+// 현침살 (懸鍼殺) - 일간의 12운성 '병(病)'지
+const HYEONCHIM: Record<number, number> = {
+  0: 5, 1: 0, 2: 8, 3: 3, 4: 8, 5: 3, 6: 11, 7: 6, 8: 2, 9: 9,
+};
+
+// 천의성 (天醫星) - 월지의 앞 지지 (월지 - 1)
+const CHUNUI: Record<number, number> = {
+  0: 11, 1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 7, 9: 8, 10: 9, 11: 10,
+};
+
 // ==========================================
 // 신살 분석 함수
 // ==========================================
@@ -263,6 +287,25 @@ export function analyzeSpecialStars(pillars: FourPillars): SpecialStar[] {
   checkStarFromBase('반안살', BANANSAL, dayBranch, true);
   checkStarFromBase('망신살', MANGSIN, yearBranch, false);
   checkStarFromBase('망신살', MANGSIN, dayBranch, false);
+  checkStemTarget('현침살', HYEONCHIM, false);
+
+  // 암록 (일간 기준)
+  checkStemTarget('암록', AMROK, true);
+
+  // 지살 (년지/일지 기준)
+  checkStarFromBase('지살', JISAL, yearBranch, false);
+  checkStarFromBase('지살', JISAL, dayBranch, false);
+
+  // 천의성 (월지 기준 → 다른 지지에서 찾기)
+  {
+    const monthBranch = pillars.month.branch;
+    const target = CHUNUI[monthBranch];
+    for (let i = 0; i < pillarCount; i++) {
+      if (branches[i] === target) {
+        stars.push({ name: '천의성', position: `${PILLAR_NAMES[i]}지`, isPositive: true });
+      }
+    }
+  }
 
   // 괴강살 (특정 간지 조합)
   {
@@ -312,6 +355,7 @@ const BRANCH_BASED_STARS: { name: string; table: Record<number, number> }[] = [
   { name: '백호살', table: BAEKHO },
   { name: '원진살', table: WONJIN },
   { name: '망신살', table: MANGSIN },
+  { name: '지살', table: JISAL },
 ];
 
 const STEM_BASED_STARS: { name: string; table: Record<number, number> }[] = [
@@ -322,6 +366,8 @@ const STEM_BASED_STARS: { name: string; table: Record<number, number> }[] = [
   { name: '건록', table: GEONROK },
   { name: '학당귀인', table: HAKDANG },
   { name: '문곡귀인', table: MUNGOK },
+  { name: '암록', table: AMROK },
+  { name: '현침살', table: HYEONCHIM },
 ];
 
 const STEM_MULTI_STARS: { name: string; table: Record<number, number[]> }[] = [
