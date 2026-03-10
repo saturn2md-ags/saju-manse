@@ -17,6 +17,7 @@ import MonthlyLuckList from '@/components/saju/MonthlyLuckList';
 import SpecialStarsSection from '@/components/saju/SpecialStarsSection';
 import InteractionsSection from '@/components/saju/InteractionsSection';
 import GongMangSection from '@/components/saju/GongMangSection';
+import JohuSection from '@/components/saju/JohuSection';
 
 import Link from 'next/link';
 
@@ -97,6 +98,9 @@ function ResultContent() {
 
           {/* 4. 오행 밸런스 */}
           <ElementBalanceComponent balance={result.elementBalance} />
+
+          {/* 4.5 조후보정 */}
+          <JohuSection pillars={result.fourPillars} />
 
           {/* 5. 합충형파해 */}
           <InteractionsSection interactions={result.interactions} />
